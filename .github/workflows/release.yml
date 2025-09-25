@@ -17,6 +17,7 @@ jobs:
     strategy:
       matrix:
         platform: [ ubuntu-24.04, ubuntu-22.04, macos-latest, macos-14 ]
+        suite: ["test", "integration-test"]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v4
@@ -28,10 +29,8 @@ jobs:
         with:
           go-version-file: 'go.mod'
           cache-dependency-path: "go.sum"
-      - run: make test
-      - run: make integration-test
+      - run: make ${{ matrix.suite }}
         shell: bash
-
   prepare-darwin:
     runs-on: ubuntu-latest
     needs: integration-tests
